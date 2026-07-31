@@ -12,3 +12,4 @@ else:
     print(f"Could not load the file {filename} it Doesn't exist or is Empty Please check again\n")
     sys.exit()
 
+load = 
