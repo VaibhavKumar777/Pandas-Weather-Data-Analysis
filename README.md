@@ -87,7 +87,7 @@ Weather Data Analysis/
 Clone the repository.
 
 ```bash
-git clone https://github.com/VaibhavKumar777/Weather-Data-Analysis
+git clone https://github.com/VaibhavKumar777/Pandas-Weather-Data-Analysis
 ```
 
 Navigate to the project folder.
