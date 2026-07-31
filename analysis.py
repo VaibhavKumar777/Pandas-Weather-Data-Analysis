@@ -14,7 +14,7 @@ def inspector(dataset):
     cols = dataset.shape[1]
     datatype = dataset.dtypes
     total_missing = dataset.isna().sum().sum()
-    missing_values = dataset[dataset.isna()]
+    missing_values = dataset[dataset.isna().any(axis=1)]
     return rows,cols,datatype,total_missing,missing_values
 
 def data_cleaner(dataset,choice,what):
@@ -24,7 +24,6 @@ def data_cleaner(dataset,choice,what):
         return dataset.fillna(what)
     elif choice == 3:
         return dataset
-    return None
 
 def column_validator(dataset,column):
     if column not in dataset.columns:
@@ -57,8 +56,28 @@ def stats(dataset,temp_column,rainfall_columns=None,humidity_column=None):
             avg_humidity = dataset[humidity_column].mean()
     return highest_temp,lowest_temp,avg_temp,total_rainfall,avg_humidity
 
-def analyze_ovetime(dataset,how="monthly"):
-    pass
+def helper(dataset, column, how):
+    if how == "monthly":
+        return dataset.groupby(dataset[column].dt.to_period("M"))
+    elif how == "yearly":
+        return dataset.groupby(dataset[column].dt.year)
+    else:
+        return None
+
+def analyze_overtime(dataset,column,what_to_calc,how="monthly"):
+    if not column_validator(dataset,column):
+        return None
+    grouped = helper(dataset,column,how)
+    if grouped is None:
+        return None
+    if what_to_calc == 1:
+        return grouped.mean()
+    elif what_to_calc == 2:
+        return grouped.sum()
+    elif what_to_calc == 3:
+        return grouped.max()
+    else:
+        return None
 
 def filter_data(dataset,column,value):
     if column_validator(dataset,column):
@@ -72,6 +91,6 @@ def sort_weather(dataset,column,ascending=True):
 
 def group_data(dataset,col1,col2):
     if column_validator(dataset,col1) and column_validator(dataset,col2):
-        grouped = dataset.groupby([col1,col2]).describe()
+        grouped = dataset.groupby([col1,col2])
         return grouped
     return None
