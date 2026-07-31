@@ -93,7 +93,7 @@ git clone https://github.com/VaibhavKumar777/Pandas-Weather-Data-Analysis
 Navigate to the project folder.
 
 ```bash
-cd Weather-Data-Analysis
+cd Pandas-Weather-Data-Analysis
 ```
 
 Install the required library.
